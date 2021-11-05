@@ -5,7 +5,7 @@ function setConnected(connected) {
 }
 
 function connect() {
-	ws = new WebSocket('ws://localhost:8080/user');
+	ws = new WebSocket('ws://n2.inline.com.de:8080/chat');
 	ws.onmessage = function(data) {
 		helloWorld(data.data);
 	}
@@ -22,13 +22,15 @@ function disconnect() {
 
 function sendData() {
 	var data = JSON.stringify({
-		'user' : $("#user").val()
+		'name' : $("#name").val(),
+		'message' : $("#message").val()
 	})
 	ws.send(data);
 }
 
 function helloWorld(message) {
-	$("#helloworldmessage").append("<tr><td> " + message + "</td></tr>");
+	var parse = JSON.parse(message);
+	$("#helloworldmessage").append("<tr><br>"  + parse.name  + "<br> : "  + parse.message+  " </td></tr>");
 }
 
 $(function() {
