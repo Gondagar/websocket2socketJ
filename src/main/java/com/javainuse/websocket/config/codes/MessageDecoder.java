@@ -1,25 +1,31 @@
 package com.javainuse.websocket.config.codes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javainuse.websocket.config.model.Message;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 
-
-@Component
+@Slf4j
 public class MessageDecoder implements Decoder.Text<Message> {
 
-    @Autowired
-    ObjectMapper objectMapper;
+    ObjectMapper objectMapper = new ObjectMapper();
 
-    @SneakyThrows
     @Override
     public Message decode(String json) throws DecodeException {
-        return objectMapper.readValue(json,Message.class);
+        try {
+            log.info("Отримано нове повідомлення: {}", json);
+            Message message = objectMapper.readValue(json, Message.class);
+            return message;
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -29,7 +35,7 @@ public class MessageDecoder implements Decoder.Text<Message> {
 
     @Override
     public void init(EndpointConfig endpointConfig) {
-
+        objectMapper = new ObjectMapper();
     }
 
     @Override

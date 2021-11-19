@@ -5,7 +5,7 @@ function setConnected(connected) {
 }
 
 function connect() {
-	ws = new WebSocket('ws://n2.inline.com.de:8080/chat');
+	ws = new WebSocket('wss://n2.inline.com.de:8443/chat');
 	ws.onmessage = function(data) {
 		helloWorld(data.data);
 	}
